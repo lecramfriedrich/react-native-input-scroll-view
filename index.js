@@ -298,13 +298,17 @@ export default class extends PureComponent {
       (isAncestor) => {
         if (!isAncestor) return;
 
-        const { text, selectionEnd, width, height } = this._getInputInfo(curFocusTarget);
+        const { text, selectionEnd, width, height, cursorPositionY } = this._getInputInfo(curFocusTarget);
         const cursorAtLastLine = !text ||
           selectionEnd === undefined ||
           text.length === selectionEnd;
 
         if (cursorAtLastLine) {
           return this._scrollToKeyboard(curFocusTarget, 0);
+        }
+
+        if (cursorPositionY) {
+          return this._scrollToKeyboard(curFocusTarget, height  - cursorPositionY);
         }
 
         this._measureCursorPosition(
@@ -425,6 +429,7 @@ export default class extends PureComponent {
     const inputInfo = this._getInputInfo(target);
 
     inputInfo.selectionEnd = event.nativeEvent.selection.end;
+    inputInfo.cursorPositionY = event.nativeEvent.selection.cursorPositionY;
 
     if (inputInfo.text === undefined) {
       inputInfo.text = getProps(event._targetInst).value;
