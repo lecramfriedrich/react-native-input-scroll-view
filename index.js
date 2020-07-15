@@ -307,7 +307,7 @@ export default class extends PureComponent {
           return this._scrollToKeyboard(curFocusTarget, 0);
         }
 
-        if (cursorPositionY) {
+        if (cursorPositionY && cursorPositionY !== -1) {
           return this._scrollToKeyboard(curFocusTarget, height  - cursorPositionY);
         }
 
